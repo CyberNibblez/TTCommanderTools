@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "KegDespawnTimer": {
+      "commandName": "Project"
+    },
+    "Powershell": {
+      "commandName": "Executable",
+      "executablePath": "E:\\GW2\\Blish.HUD.1.2.0\\Blish HUD.exe",
+      "commandLineArgs": "--debug --process WindowsTerminal --window CASCADIA_HOSTING_WINDOW_CLASS --module \"$(ProjectDir)\\$(BaseOutputPath)\\$(Configuration)/$(TargetFramework)\\$(TargetName).bhm\" --settings \"..\\Settings_$(TargetName)\""
+    }
+  }
+}
