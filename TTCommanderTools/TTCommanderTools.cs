@@ -51,7 +51,7 @@ namespace CyberNibblez.Blish.TTCommanderTools
             public double? DespawnEnd  => Stop.HasValue ? Stop.Value - DespawnDelay : (double?)null;
         }
 
-        private enum DespawnStatus { Clear, Soon, Active }
+        private enum DespawnStatus { Start, Clear, Soon, Active }
 
         private double _remaining = StartSeconds;
         private bool _running;
@@ -80,6 +80,7 @@ namespace CyberNibblez.Blish.TTCommanderTools
         private FlowPanel _listPanel;
         /*private object _soonThreshold;*/
         MonoGame.Extended.BitmapFonts.BitmapFont TimerTimeFont = GameService.Content.GetFont(ContentService.FontFace.Menomonia, ContentService.FontSize.Size36, ContentService.FontStyle.Bold);
+        private static readonly Color BaseColor  = new Color(255, 255, 255);
         private static readonly Color ClearColor  = new Color(90, 220, 90);
         private static readonly Color SoonColor   = new Color(255, 235, 40);
         private static readonly Color ActiveColor = new Color(255, 80, 60);
@@ -154,7 +155,7 @@ namespace CyberNibblez.Blish.TTCommanderTools
                 Location = new Point(8, 15)
             };
 
-            _startPauseButton = MakeButton("Start", new Point(100, 0), 60, 50);
+            _startPauseButton = MakeButton("Timer\nStart", new Point(100, 0), 60, 50);
             _startPauseButton.Click += (s, e) => ToggleTimer();
 
             var resetButton = MakeButton("Reset", new Point(170, 10), 60, 30);
@@ -170,7 +171,7 @@ namespace CyberNibblez.Blish.TTCommanderTools
             _statusLabel = new Label
             {
                 Parent = _window,
-                Text = "Despawns Clear",
+                Text = "Press Start ^",
                 Font = TimerTimeFont,
                 TextColor = ClearColor,
                 AutoSizeWidth = true,
@@ -303,6 +304,8 @@ namespace CyberNibblez.Blish.TTCommanderTools
 
             if (_running)
             {
+                
+
                 _remaining -= gameTime.ElapsedGameTime.TotalSeconds;
                 if (_remaining <= 0)
                 {
@@ -341,7 +344,7 @@ namespace CyberNibblez.Blish.TTCommanderTools
         private void RefreshUi()
         {
             _timerLabel.Text = FormatTime(_remaining);
-            _startPauseButton.Text = _running ? "Pause" : "Start";
+            _startPauseButton.Text = _running ? "Timer\nPause" : "Timer\nStart";
             _kegButton.Text = _activeRun == null ? "START Keg Run" : "STOP Keg Run";
 
             if (_listDirty)
@@ -358,7 +361,8 @@ namespace CyberNibblez.Blish.TTCommanderTools
             {
                 case DespawnStatus.Active: _statusLabel.Text = "In Despawns";    color = ActiveColor; break;
                 case DespawnStatus.Soon:   _statusLabel.Text = "Despawns Soon";  color = SoonColor;   break;
-                default:                   _statusLabel.Text = "Despawns Clear"; color = ClearColor;  break;
+                case DespawnStatus.Clear:   _statusLabel.Text = "Despawns Clear";  color = ClearColor;   break;
+                default:                   _statusLabel.Text = "Press ^^ Start"; color = BaseColor;  break;
             }
 
             _statusLabel.TextColor = color;
@@ -396,8 +400,15 @@ namespace CyberNibblez.Blish.TTCommanderTools
         private DespawnStatus Evaluate(out KegRun focus)
         {
             focus = null;
-            if (_runs.Count == 0) return DespawnStatus.Clear;
-
+            if (_runs.Count == 0 && !_running)
+            {
+                return DespawnStatus.Start;
+            }
+            else if(_runs.Count == 0 && _running)
+            {
+                return DespawnStatus.Clear;
+            }
+            
             KegRun upcoming = null;
 
             foreach (var run in _runs)
