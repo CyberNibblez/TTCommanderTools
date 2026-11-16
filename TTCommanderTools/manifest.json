@@ -4,7 +4,7 @@
   "name": "TT Commander Tools",
   "namespace": "CyberNibblez.Blish.TTCommanderTools",
   "package": "TTCommanderTools.dll",
-  "description": "Helper tools for the Triple Trouble Event: Initial release contains a helper for the hidden keg despawn timer on the Cobalt Wurm",
+  "description": "Helper tools for the Triple Trouble Event: Initial release contains a helper for the keg despawn timer on the Cobalt Wurm",
   "author": {
     "name": "Sofia.7843 | gw2tt.com",
     "email": "sofia@gw2tt.com"

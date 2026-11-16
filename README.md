@@ -1,6 +1,6 @@
 # Keg Despawn Timer (Blish HUD module)
 
-Triple Trouble helper: This module contains helpful tools for commanders of Triple Trouble: This first release contains a tool for use by Cobalt Commanders to help with the hidden Keg Despawn timer mechanic.
+Triple Trouble helper: This module contains helpful tools for commanders of Triple Trouble: This first release contains a tool for use by Cobalt Commanders to help with the Keg Despawn timer mechanic.
 
 ## Use
 - Corner icon toggles the window.
